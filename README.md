@@ -1,7 +1,14 @@
 # ALIEN – Lanceur de dés
 
 Lanceur de dés pour le JDR **ALIEN**, sans dés physiques.
-Dérivé de [jkottler/myz-roller](https://github.com/jkottler/myz-roller) (licence MIT, voir `LICENSE`).
+
+## Demo
+
+[Try Alien RPG Dice Roller](https://erwan-warenghem.github.io/alien-rpg-dice-roller/)
+
+This is my modified version of the original project.
+Original repository: jkottler/myz-roller (licence MIT, voir `LICENSE`).
+
 
 ## Les dés
 
