@@ -1,15 +1,13 @@
 {
-  "name": "myz-roller",
-  "version": "0.2.1",
+  "name": "alien-roller",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "braces": "^2.3.2",
     "gh-pages": "^2.2.0",
     "materialize-css": "^1.0.0",
     "random-js": "^1.0.8",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-ga": "^2.7.0",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
     "react-scripts": "5.0.1"
   },
   "scripts": {
@@ -20,7 +18,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://jkottler.github.io/myz-roller",
+  "homepage": ".",
   "browserslist": [
     ">0.2%",
     "not dead",

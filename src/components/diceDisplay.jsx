@@ -1,13 +1,21 @@
-import React from 'react';
+import React from 'react'
+import Die from './die'
 
-function DiceDisplay(props) {
+function DiceDisplay ({ dice }) {
   return (
     <div>
-      <div>{props.dice.filter(die => die.props.type === 'base')}</div>
-      <div>{props.dice.filter(die => die.props.type === 'skill')}</div>
-      <div>{props.dice.filter(die => die.props.type === 'gear')}</div>
+      <div>
+        {dice
+          .filter(die => die.type === 'base')
+          .map(die => <Die key={die.id} type={die.type} value={die.value} />)}
+      </div>
+      <div>
+        {dice
+          .filter(die => die.type === 'stress')
+          .map(die => <Die key={die.id} type={die.type} value={die.value} />)}
+      </div>
     </div>
-  );
+  )
 }
 
-export default DiceDisplay;
+export default DiceDisplay

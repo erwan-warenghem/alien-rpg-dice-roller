@@ -1,13 +1,33 @@
-# Mutant Year Zero Dice Roller
+# ALIEN – Lanceur de dés
 
-The app is live here: https://jkottler.github.io/myz-roller/
+Lanceur de dés pour le JDR **ALIEN**, sans dés physiques.
+Dérivé de [jkottler/myz-roller](https://github.com/jkottler/myz-roller) (licence MIT, voir `LICENSE`).
 
-This simple app is designed to allow you to play the _Mutant: Year Zero_ line of tabletop RPGs from [Free League](https://freeleaguepublishing.com/en/games/mutant-year-zero/) without physical access to their customized dice.
+## Les dés
 
-Operation should be self-explanatory: Set the number of base (yellow), skill (green), and gear (black) dice to be rolled with the on-screen controls. Press the **Roll** button to roll them. Click the **Push** button to push a roll.
+- **Dé de base (noir)** : face 6 = réticule (succès), les autres faces sont vierges.
+- **Dé de stress (jaune)** : face 6 = réticule (succès), face 1 = facehugger, les autres faces sont vierges.
 
-* 22 Mar. 2023 - A number of security and compatibility updates were applied. (v0.2.1)
+## Fonctionnement
 
-* 17 Nov. 2022 - To accommodate Talents and cirucmstances that allow multiple Pushes, the 1-push limit has been removed. The dice display now also clears when the number of dice is changed, to avoid confusion about whether a given pool has been rolled or not. (v0.2.0)
+- **Niveau de stress** : saisir le niveau ajoute automatiquement le même nombre de dés de stress à la pool.
+- Les deux types de dés restent ajustables à la main (boutons −/+ ou saisie).
+- **Pousser** (une seule fois par jet) : relance tous les dés qui ne montrent pas un 6, ajoute 1 au niveau de stress et 1 dé de stress. Impossible si un facehugger est sorti.
+- **Jet passif** (interrupteur stress désactivé) : les dés de stress ne sont pas ajoutés à la pool, pas de push possible, donc pas de risque de panique. Les valeurs de stress sont conservées pour la réactivation.
+- **Résultat** : nombre total de succès (6 sur tous les dés) et nombre de facehuggers.
+- **Jet de panique** : si un facehugger sort, un bouton lance un D6 (affiché aussi avec le niveau de stress ajouté).
+- **Dés classiques** : D6, 2D6 additionnés (2-12) et D66 (dizaine + unité, 11-66).
 
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). See documentation there for details.
+## Logos
+
+Le réticule (`src/components/reticle.svg`) et le logo des dés de stress (`src/components/facehugger.svg`) sont des SVG vectorisés à partir d'icônes provenant de https://game-icons.net (licence CC BY 3.0). Pour les remplacer par les logos officiels, garder les mêmes noms de fichiers et utiliser `fill="currentColor"` pour que la couleur s'adapte au dé (blanc sur noir, noir sur jaune).
+
+## Développement
+
+```
+npm install
+npm start        # serveur de dev
+npm test         # tests
+npm run build    # build de production (dossier build/, chemins relatifs)
+npm run deploy   # publication sur GitHub Pages (gh-pages)
+```

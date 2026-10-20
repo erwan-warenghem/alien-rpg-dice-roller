@@ -1,90 +1,49 @@
-import React from 'react';
+import React from 'react'
 
-import radWhite from './radioactive-white.svg';
-import radBlack from './radioactive-black.svg';
-import crash from './corner-explosion.svg';
-import bio from './biohazard.svg';
+import { ReactComponent as Reticle } from './reticle.svg'
+import { ReactComponent as Facehugger } from './facehugger.svg'
 
-function Die(props) {
-  return (
-    <div
-      style={{
-        ...style,
-        background: dieTypes[props.type].background,
-
-        fontFamily: "'Arial Black', Arial-BoldMT, Gadget, 'sans-serif'",
-        fontSize: 'xx-large',
-      }}>
-      <div style={{ ...style2, color: dieTypes[props.type].foreground }}>
-        {show(props.type, props.value)}
-      </div>
-    </div>
-  );
+// base   = dé noir  : 6 = réticule, autres faces vierges
+// stress = dé jaune : 6 = réticule, 1 = facehugger, autres faces vierges
+export const dieTypes = {
+  base: { background: '#111', foreground: '#f5f5f5', border: '#555' },
+  stress: { background: '#f5c400', foreground: '#111', border: '#a88400' }
 }
 
-const style2 = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-};
-
 const style = {
-  width: '50px',
-  height: '50px',
-  margin: '3px',
-  borderRadius: '5px',
+  width: '56px',
+  height: '56px',
+  margin: '4px',
+  borderRadius: '8px',
   position: 'relative',
-  display: 'inline-block',
-};
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  boxSizing: 'border-box'
+}
 
-const dieTypes = {
-  base: {
-    background: 'yellow',
-    foreground: 'black',
-    one: bio,
-    six: radBlack,
-  },
-  skill: {
-    background: 'green',
-    foreground: 'white',
-    six: radWhite,
-  },
-  gear: {
-    background: 'black',
-    foreground: 'white',
-    one: crash,
-    six: radWhite,
-  },
-};
-
-const show = (type, value) => {
-  let v = parseInt(value, 10);
-  if (v === 6) {
-    return (
-      <img
-        height="40"
-        width="40"
-        border-radius="5px"
-        src={dieTypes[type].six}
-        style={style2}
-        alt={dieTypes[type].six}
-      />
-    );
+function Face ({ type, value }) {
+  if (value === 6) return <Reticle width='38' height='38' aria-label='réticule' />
+  if (value === 1 && type === 'stress') {
+    return <Facehugger width='38' height='38' aria-label='facehugger' />
   }
-  if (v === 1 && type !== 'skill') {
-    return (
-      <img
-        height="40"
-        width="40"
-        border-radius="5px"
-        src={dieTypes[type].one}
-        style={style2}
-        alt={dieTypes[type].one}
-      />
-    );
-  }
-  return v;
-};
+  return null // face vierge
+}
 
-export default Die;
+function Die ({ type, value }) {
+  const { background, foreground, border } = dieTypes[type]
+  return (
+    <div
+      className='die'
+      style={{
+        ...style,
+        background,
+        color: foreground,
+        border: `2px solid ${border}`
+      }}>
+      <Face type={type} value={value} />
+    </div>
+  )
+}
+
+export default Die
