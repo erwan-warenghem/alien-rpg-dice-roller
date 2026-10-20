@@ -18,7 +18,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": ".",
+  "homepage": "https://github.com/erwan-warenghem/alien-rpg-dice-roller.git",
   "browserslist": [
     ">0.2%",
     "not dead",
