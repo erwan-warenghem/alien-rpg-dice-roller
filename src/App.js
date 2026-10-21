@@ -10,7 +10,7 @@ import Results from './components/results'
 import ClassicRolls from './components/classicRolls'
 import { ReactComponent as Reticle } from './components/reticle.svg'
 
-const MAX_DICE = 15
+const MAX_DICE = 15 // dés de base
 const MAX_STRESS = 15
 
 const clamp = (n, min, max) => Math.min(max, Math.max(min, n))
@@ -24,7 +24,7 @@ const makePool = (baseCount, stressCount) => [
 
 function App () {
   const [baseCount, setBaseCount] = useState(0)
-  const [stressDice, setStressDice] = useState(0)
+  // Niveau de stress = nombre de dés de stress (jaunes)
   const [stressLevel, setStressLevel] = useState(0)
   const [stressEnabled, setStressEnabled] = useState(true)
   const [dice, setDice] = useState([])
@@ -32,8 +32,8 @@ function App () {
   const [pushed, setPushed] = useState(false)
   const [panic, setPanic] = useState(null)
 
-  // Nombre de dés de stress réellement utilisés (0 quand le stress est désactivé)
-  const activeStressDice = stressEnabled ? stressDice : 0
+  // Dés de stress réellement utilisés (0 en jet passif)
+  const activeStressDice = stressEnabled ? stressLevel : 0
 
   const facehuggers = dice.filter(d => d.type === 'stress' && d.value === 1).length
   const poolEmpty = baseCount === 0 && activeStressDice === 0
@@ -54,50 +54,45 @@ function App () {
     clearRoll()
   }
 
-  // Ajustement manuel des dés de stress (toujours possible quand le stress est activé)
-  const handleStressDiceChange = n => {
-    setStressDice(n)
-    clearRoll()
-  }
-
-  // Le niveau de stress pilote automatiquement le nombre de dés de stress
-  const handleStressLevelChange = n => {
-    const delta = n - stressLevel
+  const handleStressChange = n => {
     setStressLevel(n)
-    setStressDice(clamp(stressDice + delta, 0, MAX_DICE))
     clearRoll()
   }
 
-  // Désactivation temporaire (jets passifs) : les valeurs sont conservées
+  // Désactivation temporaire (jets passifs) : le niveau est conservé
   const handleStressToggle = e => {
     setStressEnabled(e.target.checked)
     clearRoll()
   }
 
+  // Jet de panique automatique dès qu'un facehugger sort : D6 (+ niveau de stress)
+  const checkPanic = (newDice, level) => {
+    const hasFacehugger = newDice.some(d => d.type === 'stress' && d.value === 1)
+    setPanic(hasFacehugger ? { d6: rollD6(), level } : null)
+  }
+
   const handleRoll = () => {
-    setDice(makePool(baseCount, activeStressDice))
+    const newDice = makePool(baseCount, activeStressDice)
+    setDice(newDice)
     setRolled(true)
     setPushed(false)
-    setPanic(null)
+    checkPanic(newDice, stressLevel)
   }
 
   // Pousser (une seule fois) : relance tous les dés qui ne montrent pas un 6,
-  // +1 niveau de stress et +1 dé de stress.
+  // +1 niveau de stress, donc +1 dé de stress.
   const handlePush = () => {
     const newDice = dice.map(d => (d.value === 6 ? d : { ...d, value: rollD6() }))
+    let level = stressLevel
 
-    if (stressLevel < MAX_STRESS && stressDice < MAX_DICE) {
-      setStressLevel(stressLevel + 1)
-      setStressDice(stressDice + 1)
+    if (stressLevel < MAX_STRESS) {
+      level = stressLevel + 1
+      setStressLevel(level)
       newDice.push(makeDie('stress'))
     }
     setDice(newDice)
     setPushed(true)
-  }
-
-  // Jet de panique manuel : D6 (+ niveau de stress actuel)
-  const handlePanic = () => {
-    setPanic({ d6: rollD6(), level: stressLevel })
+    checkPanic(newDice, level)
   }
 
   return (
@@ -137,26 +132,15 @@ function App () {
                 </div>
 
                 <Counter
-                  id='stress-dice'
-                  label='Dés de stress (jaunes)'
+                  id='stress'
+                  label='Stress (dés jaunes)'
                   color='#f5c400'
                   textColor='#111'
-                  value={stressDice}
-                  min={0}
-                  max={MAX_DICE}
-                  disabled={!stressEnabled}
-                  onChange={handleStressDiceChange}
-                />
-                <Counter
-                  id='stress-level'
-                  label='Niveau de stress'
-                  color='#c0392b'
-                  textColor='#fff'
                   value={stressLevel}
                   min={0}
                   max={MAX_STRESS}
                   disabled={!stressEnabled}
-                  onChange={handleStressLevelChange}
+                  onChange={handleStressChange}
                 />
               </div>
 
@@ -182,25 +166,16 @@ function App () {
               <DiceDisplay dice={dice} />
               {rolled && <Results dice={dice} />}
 
-              {rolled && facehuggers > 0 && (
+              {rolled && panic && (
                 <div className='panic' style={{ marginTop: '16px' }}>
-                  <p style={{ color: '#f5c400', margin: '0 0 8px' }}>
+                  <p style={{ color: '#f5c400', margin: '0 0 8px', fontSize: '1.2rem' }}>
                     Facehugger : crise de panique !
                   </p>
-                  <button
-                    type='button'
-                    className='waves-effect waves-light btn red darken-3'
-                    disabled={panic !== null}
-                    onClick={handlePanic}>
-                    Jet de panique (D6)
-                  </button>
-                  {panic && (
-                    <div className='panic-result' style={{ marginTop: '10px', fontSize: '1.4rem' }}>
-                      D6 : <strong>{panic.d6}</strong>
-                      {' · '}avec le stress ({panic.level}) :{' '}
-                      <strong>{panic.d6 + panic.level}</strong>
-                    </div>
-                  )}
+                  <div className='panic-result' style={{ fontSize: '1.4rem' }}>
+                    D6 : <strong>{panic.d6}</strong>
+                    {' · '}avec le stress ({panic.level}) :{' '}
+                    <strong>{panic.d6 + panic.level}</strong>
+                  </div>
                 </div>
               )}
             </div>

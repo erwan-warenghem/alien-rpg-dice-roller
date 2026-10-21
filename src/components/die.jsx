@@ -15,17 +15,17 @@ const style = {
   height: '56px',
   margin: '4px',
   borderRadius: '8px',
-  position: 'relative',
-  display: 'inline-flex',
+  flex: '0 0 56px',
+  display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   boxSizing: 'border-box'
 }
 
 function Face ({ type, value }) {
-  if (value === 6) return <Reticle width='38' height='38' aria-label='réticule' />
+  if (value === 6) return <Reticle width='38' height='38' style={{ display: 'block' }} aria-label='réticule' />
   if (value === 1 && type === 'stress') {
-    return <Facehugger width='38' height='38' aria-label='facehugger' />
+    return <Facehugger width='38' height='38' style={{ display: 'block' }} aria-label='facehugger' />
   }
   return null // face vierge
 }

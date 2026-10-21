@@ -32,49 +32,49 @@ const val = id => container.querySelector('#' + id).value
 const diceCount = () => container.querySelectorAll('.die').length
 const toggle = () => act(() => { container.querySelector('input[type=checkbox]').click() })
 
-it('le niveau de stress ajoute des dés de stress, ajustables à la main', () => {
-  setInput('stress-level', 3)
-  expect(val('stress-dice')).toBe('3')
-  setInput('stress-dice', 5)
-  expect(val('stress-dice')).toBe('5')
-  setInput('stress-level', 4)
-  expect(val('stress-dice')).toBe('6')
+it('le niveau de stress = nombre de dés de stress dans la pool', () => {
+  setInput('stress', 3)
+  click(btn('Lancer'))
+  expect(diceCount()).toBe(3)
+  expect(container.querySelectorAll('.die').length).toBe(3)
 })
 
 it('pousser : stress +1, dé de stress +1, et une seule fois', () => {
   setInput('base', 2)
-  setInput('stress-level', 1)
+  setInput('stress', 1)
   click(btn('Lancer'))
   expect(diceCount()).toBe(3)
   click(btn('Pousser'))
-  expect(val('stress-level')).toBe('2')
-  expect(val('stress-dice')).toBe('2')
+  expect(val('stress')).toBe('2')
   expect(diceCount()).toBe(4)
   expect(btn('Pousser').disabled).toBe(true)
 })
 
-it('on ne peut pas pousser avec un facehugger, et le jet de panique apparaît', () => {
+it('facehugger : pas de push, jet de panique automatique', () => {
   rollD6.mockReturnValue(1)
   setInput('base', 1)
-  setInput('stress-level', 1)
+  setInput('stress', 1)
   click(btn('Lancer'))
   expect(btn('Pousser').disabled).toBe(true)
-  const panicBtn = btn('Jet de panique (D6)')
-  expect(panicBtn).toBeTruthy()
-  click(panicBtn)
   expect(container.querySelector('.panic-result').textContent).toContain('2') // 1 + stress 1
 })
 
-it('jet passif : pas de dés de stress, pas de push, valeurs conservées', () => {
+it('pas de facehugger : pas de panique', () => {
+  setInput('base', 1)
+  setInput('stress', 1)
+  click(btn('Lancer'))
+  expect(container.querySelector('.panic')).toBeNull()
+})
+
+it('jet passif : pas de dés de stress, pas de push, niveau conservé', () => {
   setInput('base', 2)
-  setInput('stress-level', 2)
+  setInput('stress', 2)
   toggle()
   click(btn('Lancer'))
   expect(diceCount()).toBe(2)
   expect(btn('Pousser').disabled).toBe(true)
   toggle()
-  expect(val('stress-dice')).toBe('2')
-  expect(val('stress-level')).toBe('2')
+  expect(val('stress')).toBe('2')
   click(btn('Lancer'))
   expect(diceCount()).toBe(4)
 })
@@ -91,4 +91,7 @@ it('jets classiques : D6, 2D6 et D66', () => {
   rollD6.mockReturnValueOnce(3).mockReturnValueOnce(5)
   click(btn('D66'))
   expect(container.querySelector('.classic-total').textContent).toBe('35')
+
+  click(container.querySelector('[aria-label="Réinitialiser les dés classiques"]'))
+  expect(container.querySelector('.classic-result')).toBeNull()
 })
