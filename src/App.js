@@ -23,7 +23,7 @@ const makePool = (baseCount, stressCount) => [
 ]
 
 function App () {
-  const [baseCount, setBaseCount] = useState(0)
+  const [baseCount, setBaseCount] = useState(5)
   // Niveau de stress = nombre de dés de stress (jaunes)
   const [stressLevel, setStressLevel] = useState(0)
   const [stressEnabled, setStressEnabled] = useState(true)
