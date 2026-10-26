@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/alien-rpg-dice-roller/static/css/main.18c21553.css",
-    "main.js": "/alien-rpg-dice-roller/static/js/main.508b7f51.js",
+    "main.js": "/alien-rpg-dice-roller/static/js/main.283a0344.js",
     "static/media/facehugger.svg": "/alien-rpg-dice-roller/static/media/facehugger.f21288ede4c46cce601bf2b46bc19d9a.svg",
     "static/media/reticle.svg": "/alien-rpg-dice-roller/static/media/reticle.8df8cbe930057d3a5f553a534ca66d24.svg",
     "index.html": "/alien-rpg-dice-roller/index.html",
     "main.18c21553.css.map": "/alien-rpg-dice-roller/static/css/main.18c21553.css.map",
-    "main.508b7f51.js.map": "/alien-rpg-dice-roller/static/js/main.508b7f51.js.map"
+    "main.283a0344.js.map": "/alien-rpg-dice-roller/static/js/main.283a0344.js.map"
   },
   "entrypoints": [
     "static/css/main.18c21553.css",
-    "static/js/main.508b7f51.js"
+    "static/js/main.283a0344.js"
   ]
 }
