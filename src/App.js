@@ -7,7 +7,7 @@ import { rollD6 } from './random'
 import Counter from './components/counter'
 import DiceDisplay from './components/diceDisplay'
 import Results from './components/results'
-import ClassicRolls from './components/classicRolls'
+import ToolsPanel from './components/toolsPanel'
 import { ReactComponent as Reticle } from './components/reticle.svg'
 
 const MAX_DICE = 15 // dés de base
@@ -183,7 +183,7 @@ function App () {
 
           <div className='row'>
             <div className='col s12'>
-              <ClassicRolls roll={rollD6} />
+              <ToolsPanel roll={rollD6} />
             </div>
           </div>
         </div>

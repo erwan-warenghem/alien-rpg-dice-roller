@@ -42,8 +42,7 @@ function ClassicRolls ({ roll }) {
   }
 
   return (
-    <div className='classic-rolls'>
-      <h5>Dés classiques</h5>
+    <div className='classic-tool'>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px' }}>
         <button type='button' className='btn' onClick={() => handle('d6')}>D6</button>
         <button type='button' className='btn' onClick={() => handle('2d6')}>2D6 (2-12)</button>

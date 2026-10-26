@@ -15,7 +15,8 @@ Dérivé de [jkottler/myz-roller](https://github.com/jkottler/myz-roller) (licen
 - **Jet passif** (interrupteur stress désactivé) : les dés de stress ne sont pas ajoutés à la pool, pas de push possible, donc pas de panique. Le niveau est conservé pour la réactivation.
 - **Résultat** : nombre total de succès (6 sur tous les dés) et nombre de facehuggers.
 - **Jet de panique** : lancé automatiquement quand un facehugger sort. Affiche le D6 et le D6 + niveau de stress.
-- **Dés classiques** : D6, 2D6 additionnés (2-12) et D66 (dizaine + unité, 11-66), avec un bouton pour réinitialiser l'affichage.
+- **Dés classiques** (onglet) : D6, 2D6 additionnés (2-12) et D66 (dizaine + unité, 11-66), avec un bouton pour réinitialiser l'affichage.
+- **Réserve** (onglet) : lance autant de dés jaunes que le niveau de réserve (air, nourriture, eau, batterie…). Le niveau baisse de 1 par facehugger.
 
 ## Logos
 

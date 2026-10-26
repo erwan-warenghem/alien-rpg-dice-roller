@@ -33,10 +33,10 @@ const diceCount = () => container.querySelectorAll('.die').length
 const toggle = () => act(() => { container.querySelector('input[type=checkbox]').click() })
 
 it('le niveau de stress = nombre de dés de stress dans la pool', () => {
+  setInput('base', 0)
   setInput('stress', 3)
   click(btn('Lancer'))
   expect(diceCount()).toBe(3)
-  expect(container.querySelectorAll('.die').length).toBe(3)
 })
 
 it('pousser : stress +1, dé de stress +1, et une seule fois', () => {
@@ -94,4 +94,32 @@ it('jets classiques : D6, 2D6 et D66', () => {
 
   click(container.querySelector('[aria-label="Réinitialiser les dés classiques"]'))
   expect(container.querySelector('.classic-result')).toBeNull()
+})
+
+it('jet de réserve : 1 niveau perdu par facehugger', () => {
+  click(btn('Réserve'))
+  setInput('supply', 3)
+  rollD6.mockReturnValueOnce(1).mockReturnValueOnce(4).mockReturnValueOnce(1)
+  click(btn('Jet de réserve'))
+  expect(container.querySelectorAll('.supply-result .die').length).toBe(3)
+  expect(val('supply')).toBe('1')
+  expect(container.querySelector('.supply-result').textContent).toContain('3 → 1')
+  expect(container.querySelector('.supply-empty')).toBeNull()
+})
+
+it('jet de réserve : réserve épuisée à 0', () => {
+  click(btn('Réserve'))
+  setInput('supply', 2)
+  rollD6.mockReturnValue(1)
+  click(btn('Jet de réserve'))
+  expect(val('supply')).toBe('0')
+  expect(container.querySelector('.supply-empty')).not.toBeNull()
+  expect(btn('Jet de réserve').disabled).toBe(true)
+})
+
+it('jet de réserve : sans facehugger le niveau ne baisse pas', () => {
+  click(btn('Réserve'))
+  setInput('supply', 4)
+  click(btn('Jet de réserve'))
+  expect(val('supply')).toBe('4')
 })
